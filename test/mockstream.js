@@ -20,7 +20,7 @@ function MockStream(source) {
 
     var self = this;
 
-    process.nextTick(function () {
+    setImmediate(function () {
         if (self.readable || self._chunks.length) {
             var hasData = self._chunks.length != 0;
 
@@ -39,7 +39,7 @@ function MockStream(source) {
                 self.emit("drain");
             }
 
-            process.nextTick(arguments.callee);
+            setImmediate(arguments.callee);
         }
     });
 
@@ -90,14 +90,14 @@ MockStream.prototype.destroy = function destroy() {
 MockStream.prototype.destroySoon = function destroySoon(callback) {
     var self = this;
 
-    process.nextTick(function () {
+    setImmediate(function () {
         if (self._chunks.length == 0) {
             self.destroy();
             if (typeof callback == "function") {
                 callback();
             }
         } else {
-            process.nextTick(arguments.callee);
+            setImmediate(arguments.callee);
         }
     });
 }
